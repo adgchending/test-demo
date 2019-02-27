@@ -345,9 +345,9 @@
     <!--定义打包生效配置-->
     <profiles>
         <profile>
-            <id>dev</id>
+            <id>dep</id>
             <properties>
-                <activeProperties>dev</activeProperties>
+                <activeProperties>dep</activeProperties>
             </properties>
             <activation>
                 <activeByDefault>true</activeByDefault>
