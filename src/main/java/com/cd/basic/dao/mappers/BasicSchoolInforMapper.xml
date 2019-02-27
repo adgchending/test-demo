@@ -1,0 +1,548 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.basic.dao.BasicSchoolInforDao">
+    <!-- BasicSchoolInfor的resultMap,column是给数据库列起的别名,它对应property类的属性-->
+    <resultMap id="result_BasicSchoolInfor_Map" type="com.cd.basic.pojo.domain.BasicSchoolInfor">
+        <id column="ID" property="id" />
+        <result column="SCHOOL_NAME" property="schoolName" />
+        <result column="REMIND_AUTO" property="remindAuto" />
+        <result column="SCHOOL_AREA" property="schoolArea" />
+        <result column="PROVINCE_CODE" property="provinceCode" />
+        <result column="VALID_START_TIME" property="validStartTime" />
+        <result column="DISTRICT_NAME" property="districtName" />
+        <result column="SCHOOL_POSTCODE" property="schoolPostcode" />
+        <result column="SETUP_TIME" property="setupTime" />
+        <result column="EDU_BUREAU_FK_CODE" property="eduBureauFkCode" />
+        <result column="DEL_STATUS" property="delStatus" />
+        <result column="SCHOOL_LATLNG" property="schoolLatlng" />
+        <result column="CREATE_TIME" property="createTime" />
+        <result column="SCHOOL_STAGES" property="schoolStages" />
+        <result column="SCHOOL_PROFILE" property="schoolProfile" />
+        <result column="SCHOOL_NATURE" property="schoolNature" />
+        <result column="CITY_CODE" property="cityCode" />
+        <result column="SCHOOL_ADDRESS" property="schoolAddress" />
+        <result column="SCHOOL_IMAGE" property="schoolImage" />
+        <result column="SCHOOL_CODE" property="schoolCode" />
+        <result column="UPDATE_TIME" property="updateTime" />
+        <result column="PROVINCE_NAME" property="provinceName" />
+        <result column="SCHOOL_MOTTO" property="schoolMotto" />
+        <result column="FK_CODE" property="fkCode" />
+        <result column="VALID_END_TIME" property="validEndTime" />
+        <result column="SCHOOL_FAX" property="schoolFax" />
+        <result column="SCHOOL_TEL" property="schoolTel" />
+        <result column="CITY_NAME" property="cityName" />
+        <result column="DISTRICT_CODE" property="districtCode" />
+        <result column="SCHOOL_ENGLISH_NAME" property="schoolEnglishName" />
+    </resultMap>
+
+	   <!-- Assist用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="Assist">
+        <where>
+            <foreach collection="require" item="req" separator=" ">
+                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
+            </foreach>
+        </where>
+    </sql>
+
+	   <!-- updateAssist用于更新数据的使用它拓展自Assist,用于辅助工具类setRequires设置的条件,${req.require}表示列名,#{req.value}表示值它是防SQL注入的 -->
+    <sql id="updateAssist">
+        <where>
+            <foreach collection="assist.require" item="req" separator=" ">
+                ${req.require} #{req.value} <if test="req.suffix != null"> ${req.suffix}</if>
+            </foreach>
+        </where>
+    </sql>
+
+    <!-- 数据库中表名为:basic_school_infor的列名,as前是数据库的列明,as后是列的别名用于映射成实体类中的属性,需要注意的是别名必须与resultMap中的column别名一致 -->
+    <sql id="basic_school_infor_Column">
+        basic_school_infor.ID as ID
+        ,basic_school_infor.SCHOOL_NAME as SCHOOL_NAME
+        ,basic_school_infor.REMIND_AUTO as REMIND_AUTO
+        ,basic_school_infor.SCHOOL_AREA as SCHOOL_AREA
+        ,basic_school_infor.PROVINCE_CODE as PROVINCE_CODE
+        ,basic_school_infor.VALID_START_TIME as VALID_START_TIME
+        ,basic_school_infor.DISTRICT_NAME as DISTRICT_NAME
+        ,basic_school_infor.SCHOOL_POSTCODE as SCHOOL_POSTCODE
+        ,basic_school_infor.SETUP_TIME as SETUP_TIME
+        ,basic_school_infor.EDU_BUREAU_FK_CODE as EDU_BUREAU_FK_CODE
+        ,basic_school_infor.DEL_STATUS as DEL_STATUS
+        ,basic_school_infor.SCHOOL_LATLNG as SCHOOL_LATLNG
+        ,basic_school_infor.CREATE_TIME as CREATE_TIME
+        ,basic_school_infor.SCHOOL_STAGES as SCHOOL_STAGES
+        ,basic_school_infor.SCHOOL_PROFILE as SCHOOL_PROFILE
+        ,basic_school_infor.SCHOOL_NATURE as SCHOOL_NATURE
+        ,basic_school_infor.CITY_CODE as CITY_CODE
+        ,basic_school_infor.SCHOOL_ADDRESS as SCHOOL_ADDRESS
+        ,basic_school_infor.SCHOOL_IMAGE as SCHOOL_IMAGE
+        ,basic_school_infor.SCHOOL_CODE as SCHOOL_CODE
+        ,basic_school_infor.UPDATE_TIME as UPDATE_TIME
+        ,basic_school_infor.PROVINCE_NAME as PROVINCE_NAME
+        ,basic_school_infor.SCHOOL_MOTTO as SCHOOL_MOTTO
+        ,basic_school_infor.FK_CODE as FK_CODE
+        ,basic_school_infor.VALID_END_TIME as VALID_END_TIME
+        ,basic_school_infor.SCHOOL_FAX as SCHOOL_FAX
+        ,basic_school_infor.SCHOOL_TEL as SCHOOL_TEL
+        ,basic_school_infor.CITY_NAME as CITY_NAME
+        ,basic_school_infor.DISTRICT_CODE as DISTRICT_CODE
+        ,basic_school_infor.SCHOOL_ENGLISH_NAME as SCHOOL_ENGLISH_NAME
+    </sql>
+
+    <!--获得类名为:BasicSchoolInfor对应的数据库表的数据总行数 -->
+    <select id="getBasicSchoolInforRowCount" parameterType="com.cd.common.Assist" resultType="java.lang.Long">
+        select count(ID) from basic_school_infor
+        <if test="require!=null"><include refid="Assist" /></if>
+    </select>
+    <!-- 获得类名为:BasicSchoolInfor对应数据库中表的数据集合 -->
+    <select id="selectBasicSchoolInfor" parameterType="com.cd.common.Assist"  resultMap="result_BasicSchoolInfor_Map">
+        select  <if test="distinct !=null">${distinct}</if>
+        <choose>
+            <when test="resultColumn!=null">${resultColumn}</when>
+            <otherwise>
+        <include refid="basic_school_infor_Column" /> 
+            </otherwise>
+        </choose>
+        from basic_school_infor
+        <choose>
+            <when test="rowSize ==null">
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+            </when>
+            <otherwise>
+                inner join
+                (
+                SELECT ID as primary_key FROM basic_school_infor
+                <if test="require!=null">
+                    <include refid="Assist" />
+                </if>
+                <if test="order !=null">${order}</if>
+                <choose>
+                    <when test="startRow !=null and rowSize !=null">LIMIT #{startRow},#{rowSize} </when>
+                    <when test="rowSize !=null">LIMIT #{rowSize}</when>
+                 </choose>
+                 ) as tmp
+                 on tmp.primary_key=basic_school_infor.ID
+            </otherwise>
+        </choose>
+    </select> 
+
+    <!-- 获得一个BasicSchoolInfor对象,以参数BasicSchoolInfor对象中不为空的属性作为条件进行查询-->
+    <select id="selectBasicSchoolInforByObj" parameterType="com.cd.basic.pojo.domain.BasicSchoolInfor" resultMap="result_BasicSchoolInfor_Map">
+        select 
+            <include refid="basic_school_infor_Column" /> 
+        from basic_school_infor
+        <where>
+            <if test="schoolEnglishName != null "> and basic_school_infor.SCHOOL_ENGLISH_NAME = #{schoolEnglishName}</if>
+            <if test="districtCode != null "> and basic_school_infor.DISTRICT_CODE = #{districtCode}</if>
+            <if test="cityName != null "> and basic_school_infor.CITY_NAME = #{cityName}</if>
+            <if test="schoolTel != null "> and basic_school_infor.SCHOOL_TEL = #{schoolTel}</if>
+            <if test="schoolFax != null "> and basic_school_infor.SCHOOL_FAX = #{schoolFax}</if>
+            <if test="validEndTime != null "> and basic_school_infor.VALID_END_TIME = #{validEndTime}</if>
+            <if test="fkCode != null "> and basic_school_infor.FK_CODE = #{fkCode}</if>
+            <if test="schoolMotto != null "> and basic_school_infor.SCHOOL_MOTTO = #{schoolMotto}</if>
+            <if test="provinceName != null "> and basic_school_infor.PROVINCE_NAME = #{provinceName}</if>
+            <if test="updateTime != null "> and basic_school_infor.UPDATE_TIME = #{updateTime}</if>
+            <if test="schoolCode != null "> and basic_school_infor.SCHOOL_CODE = #{schoolCode}</if>
+            <if test="schoolImage != null "> and basic_school_infor.SCHOOL_IMAGE = #{schoolImage}</if>
+            <if test="schoolAddress != null "> and basic_school_infor.SCHOOL_ADDRESS = #{schoolAddress}</if>
+            <if test="cityCode != null "> and basic_school_infor.CITY_CODE = #{cityCode}</if>
+            <if test="schoolNature != null "> and basic_school_infor.SCHOOL_NATURE = #{schoolNature}</if>
+            <if test="schoolProfile != null "> and basic_school_infor.SCHOOL_PROFILE = #{schoolProfile}</if>
+            <if test="schoolStages != null "> and basic_school_infor.SCHOOL_STAGES = #{schoolStages}</if>
+            <if test="createTime != null "> and basic_school_infor.CREATE_TIME = #{createTime}</if>
+            <if test="schoolLatlng != null "> and basic_school_infor.SCHOOL_LATLNG = #{schoolLatlng}</if>
+            <if test="delStatus != null "> and basic_school_infor.DEL_STATUS = #{delStatus}</if>
+            <if test="eduBureauFkCode != null "> and basic_school_infor.EDU_BUREAU_FK_CODE = #{eduBureauFkCode}</if>
+            <if test="setupTime != null "> and basic_school_infor.SETUP_TIME = #{setupTime}</if>
+            <if test="schoolPostcode != null "> and basic_school_infor.SCHOOL_POSTCODE = #{schoolPostcode}</if>
+            <if test="districtName != null "> and basic_school_infor.DISTRICT_NAME = #{districtName}</if>
+            <if test="validStartTime != null "> and basic_school_infor.VALID_START_TIME = #{validStartTime}</if>
+            <if test="provinceCode != null "> and basic_school_infor.PROVINCE_CODE = #{provinceCode}</if>
+            <if test="schoolArea != null "> and basic_school_infor.SCHOOL_AREA = #{schoolArea}</if>
+            <if test="remindAuto != null "> and basic_school_infor.REMIND_AUTO = #{remindAuto}</if>
+            <if test="schoolName != null "> and basic_school_infor.SCHOOL_NAME = #{schoolName}</if>
+            <if test="id != null "> and basic_school_infor.ID = #{id}</if>
+        </where>
+    </select> 
+
+    <!-- 通过BasicSchoolInfor的id获得对应数据库中表的数据对象-->
+    <select id="selectBasicSchoolInforById" parameterType="java.lang.Long" resultMap="result_BasicSchoolInfor_Map">
+        select 
+            <include refid="basic_school_infor_Column" /> 
+        from basic_school_infor
+        where basic_school_infor.ID = #{id}
+    </select> 
+
+    <!-- 将BasicSchoolInfor插入到对应数据库的表中,包括属性值为null的数据-->
+
+    <insert id="insertBasicSchoolInfor" parameterType="com.cd.basic.pojo.domain.BasicSchoolInfor">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into basic_school_infor(ID,SCHOOL_NAME,REMIND_AUTO,SCHOOL_AREA,PROVINCE_CODE,VALID_START_TIME,DISTRICT_NAME,SCHOOL_POSTCODE,SETUP_TIME,EDU_BUREAU_FK_CODE,DEL_STATUS,SCHOOL_LATLNG,CREATE_TIME,SCHOOL_STAGES,SCHOOL_PROFILE,SCHOOL_NATURE,CITY_CODE,SCHOOL_ADDRESS,SCHOOL_IMAGE,SCHOOL_CODE,UPDATE_TIME,PROVINCE_NAME,SCHOOL_MOTTO,FK_CODE,VALID_END_TIME,SCHOOL_FAX,SCHOOL_TEL,CITY_NAME,DISTRICT_CODE,SCHOOL_ENGLISH_NAME) 
+        values(#{id},#{schoolName},#{remindAuto},#{schoolArea},#{provinceCode},#{validStartTime},#{districtName},#{schoolPostcode},#{setupTime},#{eduBureauFkCode},#{delStatus},#{schoolLatlng},#{createTime},#{schoolStages},#{schoolProfile},#{schoolNature},#{cityCode},#{schoolAddress},#{schoolImage},#{schoolCode},#{updateTime},#{provinceName},#{schoolMotto},#{fkCode},#{validEndTime},#{schoolFax},#{schoolTel},#{cityName},#{districtCode},#{schoolEnglishName})
+    </insert>
+
+    <!-- 将BasicSchoolInfor中属性值不为null的数据,插入到对应数据库的表中-->
+    <insert id="insertNonEmptyBasicSchoolInfor" parameterType="com.cd.basic.pojo.domain.BasicSchoolInfor">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into basic_school_infor
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">ID,</if>
+            <if test="schoolName != null">SCHOOL_NAME,</if>
+            <if test="remindAuto != null">REMIND_AUTO,</if>
+            <if test="schoolArea != null">SCHOOL_AREA,</if>
+            <if test="provinceCode != null">PROVINCE_CODE,</if>
+            <if test="validStartTime != null">VALID_START_TIME,</if>
+            <if test="districtName != null">DISTRICT_NAME,</if>
+            <if test="schoolPostcode != null">SCHOOL_POSTCODE,</if>
+            <if test="setupTime != null">SETUP_TIME,</if>
+            <if test="eduBureauFkCode != null">EDU_BUREAU_FK_CODE,</if>
+            <if test="delStatus != null">DEL_STATUS,</if>
+            <if test="schoolLatlng != null">SCHOOL_LATLNG,</if>
+            <if test="createTime != null">CREATE_TIME,</if>
+            <if test="schoolStages != null">SCHOOL_STAGES,</if>
+            <if test="schoolProfile != null">SCHOOL_PROFILE,</if>
+            <if test="schoolNature != null">SCHOOL_NATURE,</if>
+            <if test="cityCode != null">CITY_CODE,</if>
+            <if test="schoolAddress != null">SCHOOL_ADDRESS,</if>
+            <if test="schoolImage != null">SCHOOL_IMAGE,</if>
+            <if test="schoolCode != null">SCHOOL_CODE,</if>
+            <if test="updateTime != null">UPDATE_TIME,</if>
+            <if test="provinceName != null">PROVINCE_NAME,</if>
+            <if test="schoolMotto != null">SCHOOL_MOTTO,</if>
+            <if test="fkCode != null">FK_CODE,</if>
+            <if test="validEndTime != null">VALID_END_TIME,</if>
+            <if test="schoolFax != null">SCHOOL_FAX,</if>
+            <if test="schoolTel != null">SCHOOL_TEL,</if>
+            <if test="cityName != null">CITY_NAME,</if>
+            <if test="districtCode != null">DISTRICT_CODE,</if>
+            <if test="schoolEnglishName != null">SCHOOL_ENGLISH_NAME,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null"> #{id},</if>
+            <if test="schoolName != null"> #{schoolName},</if>
+            <if test="remindAuto != null"> #{remindAuto},</if>
+            <if test="schoolArea != null"> #{schoolArea},</if>
+            <if test="provinceCode != null"> #{provinceCode},</if>
+            <if test="validStartTime != null"> #{validStartTime},</if>
+            <if test="districtName != null"> #{districtName},</if>
+            <if test="schoolPostcode != null"> #{schoolPostcode},</if>
+            <if test="setupTime != null"> #{setupTime},</if>
+            <if test="eduBureauFkCode != null"> #{eduBureauFkCode},</if>
+            <if test="delStatus != null"> #{delStatus},</if>
+            <if test="schoolLatlng != null"> #{schoolLatlng},</if>
+            <if test="createTime != null"> #{createTime},</if>
+            <if test="schoolStages != null"> #{schoolStages},</if>
+            <if test="schoolProfile != null"> #{schoolProfile},</if>
+            <if test="schoolNature != null"> #{schoolNature},</if>
+            <if test="cityCode != null"> #{cityCode},</if>
+            <if test="schoolAddress != null"> #{schoolAddress},</if>
+            <if test="schoolImage != null"> #{schoolImage},</if>
+            <if test="schoolCode != null"> #{schoolCode},</if>
+            <if test="updateTime != null"> #{updateTime},</if>
+            <if test="provinceName != null"> #{provinceName},</if>
+            <if test="schoolMotto != null"> #{schoolMotto},</if>
+            <if test="fkCode != null"> #{fkCode},</if>
+            <if test="validEndTime != null"> #{validEndTime},</if>
+            <if test="schoolFax != null"> #{schoolFax},</if>
+            <if test="schoolTel != null"> #{schoolTel},</if>
+            <if test="cityName != null"> #{cityName},</if>
+            <if test="districtCode != null"> #{districtCode},</if>
+            <if test="schoolEnglishName != null"> #{schoolEnglishName},</if>
+        </trim>
+    </insert>
+
+    <!-- 将BasicSchoolInfor批量插入到对应数据库的表中-->
+    <insert id="insertBasicSchoolInforByBatch" parameterType="ArrayList">
+        <selectKey keyProperty="id" resultType="Long" order="AFTER">
+            SELECT LAST_INSERT_ID() AS id
+        </selectKey>
+        insert into basic_school_infor(ID,SCHOOL_NAME,REMIND_AUTO,SCHOOL_AREA,PROVINCE_CODE,VALID_START_TIME,DISTRICT_NAME,SCHOOL_POSTCODE,SETUP_TIME,EDU_BUREAU_FK_CODE,DEL_STATUS,SCHOOL_LATLNG,CREATE_TIME,SCHOOL_STAGES,SCHOOL_PROFILE,SCHOOL_NATURE,CITY_CODE,SCHOOL_ADDRESS,SCHOOL_IMAGE,SCHOOL_CODE,UPDATE_TIME,PROVINCE_NAME,SCHOOL_MOTTO,FK_CODE,VALID_END_TIME,SCHOOL_FAX,SCHOOL_TEL,CITY_NAME,DISTRICT_CODE,SCHOOL_ENGLISH_NAME) values
+        <foreach collection="list" item="item" index="index" separator="," >
+            (#{item.id},#{item.schoolName},#{item.remindAuto},#{item.schoolArea},#{item.provinceCode},#{item.validStartTime},#{item.districtName},#{item.schoolPostcode},#{item.setupTime},#{item.eduBureauFkCode},#{item.delStatus},#{item.schoolLatlng},#{item.createTime},#{item.schoolStages},#{item.schoolProfile},#{item.schoolNature},#{item.cityCode},#{item.schoolAddress},#{item.schoolImage},#{item.schoolCode},#{item.updateTime},#{item.provinceName},#{item.schoolMotto},#{item.fkCode},#{item.validEndTime},#{item.schoolFax},#{item.schoolTel},#{item.cityName},#{item.districtCode},#{item.schoolEnglishName})
+        </foreach>
+    </insert>
+
+    <!-- 通过BasicSchoolInfor的id将数据库表中对应的数据删除-->
+    <delete id="deleteBasicSchoolInforById" parameterType="java.lang.Long">
+        delete from basic_school_infor
+        where ID = #{id}
+    </delete>
+
+    <!-- 通过辅助工具Assist中的条件将BasicSchoolInfor对应的数据库表的数据删除-->
+    <delete id="deleteBasicSchoolInfor" parameterType="com.cd.common.Assist">
+        delete from basic_school_infor
+        <if test="require!=null"><include refid="Assist" /></if>
+    </delete>
+
+    <!-- 通过BasicSchoolInfor的id将BasicSchoolInfor的数据更新到数据库中对应的表,包括值null的数据-->
+    <update id="updateBasicSchoolInforById" parameterType="com.cd.basic.pojo.domain.BasicSchoolInfor">
+        update basic_school_infor set
+            SCHOOL_NAME=#{schoolName}
+            ,REMIND_AUTO=#{remindAuto}
+            ,SCHOOL_AREA=#{schoolArea}
+            ,PROVINCE_CODE=#{provinceCode}
+            ,VALID_START_TIME=#{validStartTime}
+            ,DISTRICT_NAME=#{districtName}
+            ,SCHOOL_POSTCODE=#{schoolPostcode}
+            ,SETUP_TIME=#{setupTime}
+            ,EDU_BUREAU_FK_CODE=#{eduBureauFkCode}
+            ,DEL_STATUS=#{delStatus}
+            ,SCHOOL_LATLNG=#{schoolLatlng}
+            ,CREATE_TIME=#{createTime}
+            ,SCHOOL_STAGES=#{schoolStages}
+            ,SCHOOL_PROFILE=#{schoolProfile}
+            ,SCHOOL_NATURE=#{schoolNature}
+            ,CITY_CODE=#{cityCode}
+            ,SCHOOL_ADDRESS=#{schoolAddress}
+            ,SCHOOL_IMAGE=#{schoolImage}
+            ,SCHOOL_CODE=#{schoolCode}
+            ,UPDATE_TIME=#{updateTime}
+            ,PROVINCE_NAME=#{provinceName}
+            ,SCHOOL_MOTTO=#{schoolMotto}
+            ,FK_CODE=#{fkCode}
+            ,VALID_END_TIME=#{validEndTime}
+            ,SCHOOL_FAX=#{schoolFax}
+            ,SCHOOL_TEL=#{schoolTel}
+            ,CITY_NAME=#{cityName}
+            ,DISTRICT_CODE=#{districtCode}
+            ,SCHOOL_ENGLISH_NAME=#{schoolEnglishName}
+        where ID=#{id}
+    </update>
+
+    <!-- 通过BasicSchoolInfor的id将BasicSchoolInfor中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyBasicSchoolInforById" parameterType="com.cd.basic.pojo.domain.BasicSchoolInfor">
+        update basic_school_infor
+        <set>
+            <if test="schoolName != null">
+                SCHOOL_NAME=#{schoolName},
+            </if>
+            <if test="remindAuto != null">
+                REMIND_AUTO=#{remindAuto},
+            </if>
+            <if test="schoolArea != null">
+                SCHOOL_AREA=#{schoolArea},
+            </if>
+            <if test="provinceCode != null">
+                PROVINCE_CODE=#{provinceCode},
+            </if>
+            <if test="validStartTime != null">
+                VALID_START_TIME=#{validStartTime},
+            </if>
+            <if test="districtName != null">
+                DISTRICT_NAME=#{districtName},
+            </if>
+            <if test="schoolPostcode != null">
+                SCHOOL_POSTCODE=#{schoolPostcode},
+            </if>
+            <if test="setupTime != null">
+                SETUP_TIME=#{setupTime},
+            </if>
+            <if test="eduBureauFkCode != null">
+                EDU_BUREAU_FK_CODE=#{eduBureauFkCode},
+            </if>
+            <if test="delStatus != null">
+                DEL_STATUS=#{delStatus},
+            </if>
+            <if test="schoolLatlng != null">
+                SCHOOL_LATLNG=#{schoolLatlng},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME=#{createTime},
+            </if>
+            <if test="schoolStages != null">
+                SCHOOL_STAGES=#{schoolStages},
+            </if>
+            <if test="schoolProfile != null">
+                SCHOOL_PROFILE=#{schoolProfile},
+            </if>
+            <if test="schoolNature != null">
+                SCHOOL_NATURE=#{schoolNature},
+            </if>
+            <if test="cityCode != null">
+                CITY_CODE=#{cityCode},
+            </if>
+            <if test="schoolAddress != null">
+                SCHOOL_ADDRESS=#{schoolAddress},
+            </if>
+            <if test="schoolImage != null">
+                SCHOOL_IMAGE=#{schoolImage},
+            </if>
+            <if test="schoolCode != null">
+                SCHOOL_CODE=#{schoolCode},
+            </if>
+            <if test="updateTime != null">
+                UPDATE_TIME=#{updateTime},
+            </if>
+            <if test="provinceName != null">
+                PROVINCE_NAME=#{provinceName},
+            </if>
+            <if test="schoolMotto != null">
+                SCHOOL_MOTTO=#{schoolMotto},
+            </if>
+            <if test="fkCode != null">
+                FK_CODE=#{fkCode},
+            </if>
+            <if test="validEndTime != null">
+                VALID_END_TIME=#{validEndTime},
+            </if>
+            <if test="schoolFax != null">
+                SCHOOL_FAX=#{schoolFax},
+            </if>
+            <if test="schoolTel != null">
+                SCHOOL_TEL=#{schoolTel},
+            </if>
+            <if test="cityName != null">
+                CITY_NAME=#{cityName},
+            </if>
+            <if test="districtCode != null">
+                DISTRICT_CODE=#{districtCode},
+            </if>
+            <if test="schoolEnglishName != null">
+                SCHOOL_ENGLISH_NAME=#{schoolEnglishName},
+            </if>
+        </set>
+        where ID=#{id}
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将BasicSchoolInfor中的数据更新到数据库对应的表中,包括值为null的数据-->
+    <update id="updateBasicSchoolInfor" parameterType="map">
+        update basic_school_infor
+        <set>
+                ID=#{enti.id},
+                SCHOOL_NAME=#{enti.schoolName},
+                REMIND_AUTO=#{enti.remindAuto},
+                SCHOOL_AREA=#{enti.schoolArea},
+                PROVINCE_CODE=#{enti.provinceCode},
+                VALID_START_TIME=#{enti.validStartTime},
+                DISTRICT_NAME=#{enti.districtName},
+                SCHOOL_POSTCODE=#{enti.schoolPostcode},
+                SETUP_TIME=#{enti.setupTime},
+                EDU_BUREAU_FK_CODE=#{enti.eduBureauFkCode},
+                DEL_STATUS=#{enti.delStatus},
+                SCHOOL_LATLNG=#{enti.schoolLatlng},
+                CREATE_TIME=#{enti.createTime},
+                SCHOOL_STAGES=#{enti.schoolStages},
+                SCHOOL_PROFILE=#{enti.schoolProfile},
+                SCHOOL_NATURE=#{enti.schoolNature},
+                CITY_CODE=#{enti.cityCode},
+                SCHOOL_ADDRESS=#{enti.schoolAddress},
+                SCHOOL_IMAGE=#{enti.schoolImage},
+                SCHOOL_CODE=#{enti.schoolCode},
+                UPDATE_TIME=#{enti.updateTime},
+                PROVINCE_NAME=#{enti.provinceName},
+                SCHOOL_MOTTO=#{enti.schoolMotto},
+                FK_CODE=#{enti.fkCode},
+                VALID_END_TIME=#{enti.validEndTime},
+                SCHOOL_FAX=#{enti.schoolFax},
+                SCHOOL_TEL=#{enti.schoolTel},
+                CITY_NAME=#{enti.cityName},
+                DISTRICT_CODE=#{enti.districtCode},
+                SCHOOL_ENGLISH_NAME=#{enti.schoolEnglishName},
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+    <!-- 通过辅助工具Assist中的条件将BasicSchoolInfor中属性值不为null的数据更新到数据库对应的表中-->
+    <update id="updateNonEmptyBasicSchoolInfor" parameterType="map">
+        update basic_school_infor
+        <set>
+            <if test="enti.id != null">
+                ID=#{enti.id},
+            </if>
+            <if test="enti.schoolName != null">
+                SCHOOL_NAME=#{enti.schoolName},
+            </if>
+            <if test="enti.remindAuto != null">
+                REMIND_AUTO=#{enti.remindAuto},
+            </if>
+            <if test="enti.schoolArea != null">
+                SCHOOL_AREA=#{enti.schoolArea},
+            </if>
+            <if test="enti.provinceCode != null">
+                PROVINCE_CODE=#{enti.provinceCode},
+            </if>
+            <if test="enti.validStartTime != null">
+                VALID_START_TIME=#{enti.validStartTime},
+            </if>
+            <if test="enti.districtName != null">
+                DISTRICT_NAME=#{enti.districtName},
+            </if>
+            <if test="enti.schoolPostcode != null">
+                SCHOOL_POSTCODE=#{enti.schoolPostcode},
+            </if>
+            <if test="enti.setupTime != null">
+                SETUP_TIME=#{enti.setupTime},
+            </if>
+            <if test="enti.eduBureauFkCode != null">
+                EDU_BUREAU_FK_CODE=#{enti.eduBureauFkCode},
+            </if>
+            <if test="enti.delStatus != null">
+                DEL_STATUS=#{enti.delStatus},
+            </if>
+            <if test="enti.schoolLatlng != null">
+                SCHOOL_LATLNG=#{enti.schoolLatlng},
+            </if>
+            <if test="enti.createTime != null">
+                CREATE_TIME=#{enti.createTime},
+            </if>
+            <if test="enti.schoolStages != null">
+                SCHOOL_STAGES=#{enti.schoolStages},
+            </if>
+            <if test="enti.schoolProfile != null">
+                SCHOOL_PROFILE=#{enti.schoolProfile},
+            </if>
+            <if test="enti.schoolNature != null">
+                SCHOOL_NATURE=#{enti.schoolNature},
+            </if>
+            <if test="enti.cityCode != null">
+                CITY_CODE=#{enti.cityCode},
+            </if>
+            <if test="enti.schoolAddress != null">
+                SCHOOL_ADDRESS=#{enti.schoolAddress},
+            </if>
+            <if test="enti.schoolImage != null">
+                SCHOOL_IMAGE=#{enti.schoolImage},
+            </if>
+            <if test="enti.schoolCode != null">
+                SCHOOL_CODE=#{enti.schoolCode},
+            </if>
+            <if test="enti.updateTime != null">
+                UPDATE_TIME=#{enti.updateTime},
+            </if>
+            <if test="enti.provinceName != null">
+                PROVINCE_NAME=#{enti.provinceName},
+            </if>
+            <if test="enti.schoolMotto != null">
+                SCHOOL_MOTTO=#{enti.schoolMotto},
+            </if>
+            <if test="enti.fkCode != null">
+                FK_CODE=#{enti.fkCode},
+            </if>
+            <if test="enti.validEndTime != null">
+                VALID_END_TIME=#{enti.validEndTime},
+            </if>
+            <if test="enti.schoolFax != null">
+                SCHOOL_FAX=#{enti.schoolFax},
+            </if>
+            <if test="enti.schoolTel != null">
+                SCHOOL_TEL=#{enti.schoolTel},
+            </if>
+            <if test="enti.cityName != null">
+                CITY_NAME=#{enti.cityName},
+            </if>
+            <if test="enti.districtCode != null">
+                DISTRICT_CODE=#{enti.districtCode},
+            </if>
+            <if test="enti.schoolEnglishName != null">
+                SCHOOL_ENGLISH_NAME=#{enti.schoolEnglishName},
+            </if>
+        </set>
+        <if test="assist.require!=null"><include refid="updateAssist" /></if>
+    </update>
+
+</mapper>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.shiro.dao.SysPermissionDao">
+    <select id="selectPermissionByUserId" parameterType="long" resultType="string">
+    SELECT DISTINCT
+        sp.permission
+    FROM
+        sys_permission sp
+        INNER JOIN sys_role_permission srp ON sp.id = srp.permission_id
+        INNER JOIN sys_user_role sur ON sur.role_id = srp.role_id
+    WHERE
+        sur.user_id = #{userId}
+    </select>
+</mapper>

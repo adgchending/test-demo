@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cd.basic.dao.BuildingDaoCustom">
+    <resultMap id="result_BasicGetDicListBo_Map" type="com.cd.basic.pojo.bo.BasicGetDicListBo">
+        <result column="DIC_KEY" property="dicKey"/>
+        <result column="DIC_VALUE" property="dicValue"/>
+    </resultMap>
+    <select id="getDicList" resultMap="result_BasicGetDicListBo_Map">
+        SELECT d.DIC_KEY,d.DIC_VALUE
+		FROM sys_dic_code dc
+		LEFT JOIN sys_dic d ON dc.FK_CODE = d.DIC_CODE_FK_CODE
+        WHERE dc.DIC_CODE = #{dicCode}
+        AND d.ORG_FK_CODE = #{schoolFkCode}
+        ORDER BY d.POSITION ASC
+    </select>
+
+</mapper>
